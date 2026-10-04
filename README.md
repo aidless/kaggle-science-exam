@@ -1,5 +1,7 @@
 # Kaggle Science Exam - Stage Analysis Tools
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A collection of analysis modules that read `.workbuddy/memory/YYYY-MM-DD.md`
 files and produce reports on the cadence, structure, and quality of the
 stage workflow used in the project. It contains **18 reconstructed CLI modules (D41–D58)** only — the original Kaggle competition work (stages D1–D40) is permanently lost (see note below).
