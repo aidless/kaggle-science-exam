@@ -2,7 +2,7 @@
 
 A collection of analysis modules that read `.workbuddy/memory/YYYY-MM-DD.md`
 files and produce reports on the cadence, structure, and quality of the
-stage workflow used in the project.
+stage workflow used in the project. It contains **18 reconstructed CLI modules (D41–D58)** only — the original Kaggle competition work (stages D1–D40) is permanently lost (see note below).
 
 > **Note (2026-07-20):** This README and the source tree were
 > reconstructed after a workspace loss on 2026-07-20 ~16:00 (the
@@ -15,7 +15,7 @@ stage workflow used in the project.
 ## Quick start
 
 ```bash
-cd F:\test\2026-07-18-23-56-14\kaggle_science_exam
+cd kaggle-science-exam
 python -m pytest tests/ -v
 python tests/smoke_test.py
 ```
