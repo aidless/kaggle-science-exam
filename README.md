@@ -8,8 +8,7 @@ stage workflow used in the project. It contains **18 reconstructed CLI modules (
 
 > **Note (2026-07-20):** This README and the source tree were
 > reconstructed after a workspace loss on 2026-07-20 ~16:00 (the
-> original `F:\test\2026-07-18-23-56-14\kaggle_science_exam\`
-> directory was cleared by an unrelated operation). The modules
+> original working directory was cleared by an unrelated operation). The modules
 > D41-D58 are restored from the conversation history. Earlier
 > stages D1-D40 are not included in this reconstruction; the
 > original `submission.zip` and full history is unavailable.
