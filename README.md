@@ -90,6 +90,39 @@ kaggle_science_exam/
 ## Status
 
 - 18 modules (D41-D58) restored
-- ~144 pytest tests (target)
+- 71 pytest tests, all passing (verified 2026-11-01 on this tree)
 - 18 smoke stages
 - Reconstruction completed 2026-07-20 ~18:00
+
+## What this does and does not prove
+
+**Proves:** the 18 reconstructed CLI modules parse `.workbuddy/memory/*.md` daily
+logs and emit the documented report structures without error; each module's core
+logic (streak, cadence, coverage, clusters, backlog, coupling, maturity, velocity,
+distribution, calendar, etc.) is exercised by a passing pytest case on fixture
+input.
+
+**Does not prove:** these modules describe the original Kaggle competition work.
+Stages D1–D40 are permanently lost (workspace cleared 2026-07-20), so the
+"stage analysis" here measures a **reconstructed log**, not the original
+competition run. No leaderboard score, submission rank, or competition result is
+claimed. The analysis is a reconstruction artifact, not an audit of the original
+project.
+
+## Reproducing the numbers
+
+```bash
+cd kaggle-science-exam
+python -m pytest -q          # 71 passed
+python tests/smoke_test.py   # ALL 18 STAGES PASSED
+
+# one CLI, one run
+python -m src.analysis.stage_timeline \
+    --memory_dir .workbuddy/memory \
+    --out report/stage_timeline.md \
+    --out_json report/stage_timeline.json
+```
+
+All 71 tests live under `tests/` and all 18 modules under `src/analysis/`; the
+input fixture is `.workbuddy/memory/2026-07-20.md`. The count above is the
+actual `pytest --collect-only` total, not a target.
