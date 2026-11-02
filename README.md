@@ -94,6 +94,30 @@ kaggle_science_exam/
 - 18 smoke stages
 - Reconstruction completed 2026-07-20 ~18:00
 
+## Fail-closed guarantee
+
+When the input is missing or malformed, the modules **do not fabricate numbers**.
+`_safe_read` returns `""` for a nonexistent path (`src/analysis/stage_summary.py:29`),
+and `build_summary` on an empty directory returns `n_stages=0, health="D"` (the worst
+grade) instead of inventing a health score — asserted by `tests/test_d48_stage_summary.py::test_build_summary_empty`.
+A missing log yields the worst grade, never a fake "pass".
+
+## Related work (reconstruction vs original audit)
+
+This toolset sits in a deliberate contrast to the original competition run:
+
+| Prior work | Real basis | This repo's relationship |
+|---|---|---|
+| Original Kaggle stages D1–D40 | Lost (workspace cleared 2026-07-20) | **Not** reconstructed here; this repo explicitly does not audit them |
+| Stage-analysis as an audit of a live run | A live project's `.workbuddy/memory/` logs | This repo measures a **reconstructed** log, not a live run |
+| Generic activity-streak / cadence analysis | Standard time-series activity metrics | This repo reimplements them per-stage (D41–D58) over daily markdown logs |
+| Community detection / coupling analysis | Graph partition + modularity | This repo applies greedy clustering + cross-cluster coupling to stage co-mentions |
+
+**Core difference**: a live-run stage audit can claim to describe the real workflow; this
+toolset explicitly **cannot** — the analysis is a reconstruction artifact, not an audit
+of the original project (see the note above and the "What this does and does not prove"
+section).
+
 ## What this does and does not prove
 
 **Proves:** the 18 reconstructed CLI modules parse `.workbuddy/memory/*.md` daily
