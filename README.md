@@ -1,5 +1,7 @@
 # Kaggle Science Exam - Stage Analysis Tools
 
+[![CI](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml/badge.svg)](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml)
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A collection of analysis modules that read `.workbuddy/memory/YYYY-MM-DD.md`
