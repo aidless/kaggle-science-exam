@@ -1,5 +1,7 @@
 # Kaggle Science Exam - Stage Analysis Tools
 
+[![CI](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml/badge.svg)](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml)
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A collection of analysis modules that read `.workbuddy/memory/YYYY-MM-DD.md`
@@ -13,12 +15,43 @@ stage workflow used in the project. It contains **18 reconstructed CLI modules (
 > stages D1-D40 are not included in this reconstruction; the
 > original `submission.zip` and full history is unavailable.
 
-## Quick start
+## Installation
+
+Dependencies are minimal: the 18 analysis modules use the Python standard
+library only; `pytest>=8.0` (from `requirements.txt`) is needed for the test
+suite and the smoke test.
+
+On Debian/Ubuntu with Python 3.12+, PEP 668 blocks direct `pip install` into
+the system interpreter — use a venv (verified 2026-11-10 on Ubuntu 24.04):
 
 ```bash
 cd kaggle-science-exam
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+## Quick start
+
+```bash
 python -m pytest tests/ -v
 python tests/smoke_test.py
+```
+
+### Example output (2026-11-10, fresh venv, `pip install -r requirements.txt`)
+
+```text
+$ python -m pytest tests/ -q
+.......................................................................  [100%]
+71 passed in 0.34s
+
+$ python tests/smoke_test.py
+[18/18] stage_coupling CLI
+...
+[18/18] stage_calendar CLI
+================================================================
+ALL SMOKE TESTS PASSED (D41 - D58)
+================================================================
 ```
 
 ## Modules
@@ -90,9 +123,8 @@ kaggle_science_exam/
 ## Status
 
 - 18 modules (D41-D58) restored
-- 71 pytest tests, all passing (verified 2026-11-01 on this tree)
-- 18 smoke stages
-- Reconstruction completed 2026-07-20 ~18:00
+- 71 pytest tests passing (measured 2026-11-10, `python -m pytest tests/ -q`)
+- 18 smoke stages, all passing (measured 2026-11-10)- Reconstruction completed 2026-07-20 ~18:00
 
 ## Fail-closed guarantee
 
