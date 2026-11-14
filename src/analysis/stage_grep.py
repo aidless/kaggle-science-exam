@@ -11,10 +11,9 @@ import argparse
 import json
 import re
 import time
-from collections import Counter, defaultdict
-from dataclasses import asdict, dataclass
+from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 
 _STAGE_ID_RE = re.compile(r"\bD(\d+)\b")

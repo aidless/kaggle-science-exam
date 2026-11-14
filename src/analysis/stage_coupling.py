@@ -18,7 +18,7 @@ import argparse
 import json
 import re
 import time
-from collections import Counter, defaultdict
+from collections import defaultdict
 from dataclasses import asdict, dataclass
 from itertools import combinations
 from pathlib import Path

@@ -13,7 +13,7 @@ import json
 import re
 import time
 from collections import defaultdict
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from itertools import combinations
 from pathlib import Path
 from typing import Optional

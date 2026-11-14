@@ -3,13 +3,12 @@ import sys
 from datetime import date
 from pathlib import Path
 
-import pytest
 
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.analysis.stage_backlog import (
-    build_backlog, _normalize_did, _scan_project_stages, _scan_readme_stages
+    build_backlog, _normalize_did, _scan_project_stages
 )
 
 
