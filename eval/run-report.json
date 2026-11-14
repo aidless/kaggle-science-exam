@@ -1,0 +1,129 @@
+{
+ "total": 20,
+ "passed": 20,
+ "failed": 0,
+ "selftest": false,
+ "failed_by_axis": {},
+ "results": [
+  {
+   "id": "KS-01",
+   "axis": "streak/口径",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "id": "KS-02",
+   "axis": "streak/口径",
+   "ok": true,
+   "detail": "0|0|"
+  },
+  {
+   "id": "KS-03",
+   "axis": "streak/口径",
+   "ok": true,
+   "detail": "3/2"
+  },
+  {
+   "id": "KS-04",
+   "axis": "summary/fail-closed",
+   "ok": true,
+   "detail": "D"
+  },
+  {
+   "id": "KS-05",
+   "axis": "summary/fail-closed",
+   "ok": true,
+   "detail": "0/0/0/1"
+  },
+  {
+   "id": "KS-06",
+   "axis": "grep/真文件",
+   "ok": true,
+   "detail": "102"
+  },
+  {
+   "id": "KS-07",
+   "axis": "grep/真文件",
+   "ok": true,
+   "detail": "18"
+  },
+  {
+   "id": "KS-08",
+   "axis": "maturity/三通道",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "id": "KS-09",
+   "axis": "maturity/三通道",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "id": "KS-10",
+   "axis": "cadence/评分",
+   "ok": true,
+   "detail": "55/C"
+  },
+  {
+   "id": "KS-11",
+   "axis": "cadence/评分",
+   "ok": true,
+   "detail": "3.0"
+  },
+  {
+   "id": "KS-12",
+   "axis": "velocity/epoch",
+   "ok": true,
+   "detail": "2/3"
+  },
+  {
+   "id": "KS-13",
+   "axis": "fanout/共现",
+   "ok": true,
+   "detail": "0.2"
+  },
+  {
+   "id": "KS-14",
+   "axis": "fanout/共现",
+   "ok": true,
+   "detail": "2/3/1.5"
+  },
+  {
+   "id": "KS-15",
+   "axis": "distribution/gini",
+   "ok": true,
+   "detail": "0.720873786407767"
+  },
+  {
+   "id": "KS-16",
+   "axis": "tests/声明条数",
+   "ok": true,
+   "detail": "71"
+  },
+  {
+   "id": "KS-17",
+   "axis": "api/契约",
+   "ok": true,
+   "detail": "raised TypeError"
+  },
+  {
+   "id": "KS-18",
+   "axis": "docs/声明",
+   "ok": true,
+   "detail": "71 pytest tests passing"
+  },
+  {
+   "id": "KS-19",
+   "axis": "docs/声明",
+   "ok": true,
+   "detail": "n_stages=0, health=\"D\""
+  },
+  {
+   "id": "KS-20",
+   "axis": "docs/声明",
+   "ok": true,
+   "detail": "python3 -m pytest tests -q"
+  }
+ ]
+}

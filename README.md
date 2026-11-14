@@ -182,3 +182,35 @@ python -m src.analysis.stage_timeline \
 All 71 tests live under `tests/` and all 18 modules under `src/analysis/`; the
 input fixture is `.workbuddy/memory/2026-07-20.md`. The count above is the
 actual `pytest --collect-only` total, not a target.
+
+## 验收题库与复算
+
+`eval/cases.jsonl` 是 20 条可执行验收题，覆盖十一个口径：streak 的标题行解析与
+fail-closed 输入、summary 的最差等级、grep 对真仓文件的扫描计数与 `D1`→`D01`
+归一、maturity 的三通道（memory+code+readme）0-3 分、cadence 的评分公式与偶数
+中位数、velocity 的 epoch 切段、fanout 的 jaccard 与共现密度、distribution 的
+Gini、`tests/` 的 ast 条数（对表 PREREG 的 71）、keyword-only 签名契约，以及
+README/PREREG/Makefile 三条文档声明。
+
+大部分题目的期望值不是抄文档，而是**调用模块现算**：17 条 `expr`/`raises` 真跑
+`src.analysis.*`（其中 8 条直接解析仓库真实文件 —— `.workbuddy/memory/2026-07-20.md`、
+`src/`、`tests/`、`README.md`），3 条 `doc` 对文档逐字匹配。
+
+```bash
+python3 eval/run_cases.py            # 20/20 cases passed
+python3 eval/run_cases.py --save     # 顺带把结果写进 eval/run-report.json
+python3 eval/run_cases.py --selftest # 篡改一条期望值，必须变红（19/20）
+```
+
+**数字如何复算**：`eval/run-report.json` 里每条 case 都带 `id` / `axis` / `detail`，
+把 `detail` 与 `cases.jsonl` 的 `verify` 代码一起看，就能从源码复现该数字；
+`--save` 重跑一次即可重建整份报告，不需要手工抄数。`expr` 题的 `verify` 用
+`Path(src.analysis.stage_*.__file__).parents[2]` 定位仓库根，因此在任意 cwd 下
+运行都读同一份真实文件。
+
+**失败归因**：`run_cases.py` 不只报通过率，失败时按 `axis` 汇总（例如
+`streak/口径: 1 条 —— KS-01`），直接指出是哪个模块的哪个口径坏了。
+
+**通过判据**：`python3 eval/run_cases.py` 的 pass_rate 必须 = 100%（20/20 条通过），
+退出码必须为 0；`python3 eval/run_cases.py --selftest` 的 pass_rate 必须 = 95%
+（19/20，即至少 1 条失败），否则这套题没有判别力。低于任一阈值即判定验收不通过。
