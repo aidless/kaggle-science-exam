@@ -184,7 +184,7 @@ def main() -> int:
     p = argparse.ArgumentParser(
         description="Stage density curve (front/back-loaded)")
     p.add_argument("--memory_dir", type=Path,
-                   default=Path("../.workbuddy/memory"))
+                   default=Path(".workbuddy/memory"))
     p.add_argument("--out", type=Path,
                    default=Path("report/stage_density_curve.md"))
     p.add_argument("--out_json", type=Path,

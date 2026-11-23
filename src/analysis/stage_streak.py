@@ -2,10 +2,11 @@
 Stage streak (D41).
 
 Reads `.workbuddy/memory/YYYY-MM-DD.md` and computes:
-  - per-day count of distinct stages mentioned
-  - streak: longest consecutive run of active days
-  - current streak (ending today)
-  - first-seen dates
+  - per-day count of distinct stages mentioned on `##` heading lines
+  - longest consecutive run of dated files
+  - current streak: the consecutive run ending on the last dated file
+    (the `today` argument is accepted and ignored)
+  - first-seen stage ids from those heading lines
 """
 
 from __future__ import annotations
@@ -155,7 +156,7 @@ def render_json(report: StreakReport) -> dict:
 def main() -> int:
     p = argparse.ArgumentParser(description="Stage streak")
     p.add_argument("--memory_dir", type=Path,
-                   default=Path("../.workbuddy/memory"))
+                   default=Path(".workbuddy/memory"))
     p.add_argument("--out", type=Path,
                    default=Path("report/stage_streak.md"))
     p.add_argument("--out_json", type=Path,

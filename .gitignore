@@ -9,3 +9,5 @@ dist/
 build/
 eval_out/
 .DS_Store
+# CLI output. Not source data and not a recovered competition report.
+/report/

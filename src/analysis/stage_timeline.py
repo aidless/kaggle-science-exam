@@ -154,7 +154,7 @@ def main() -> int:
     p = argparse.ArgumentParser(
         description="Stage timeline (first-seen dates + gaps)")
     p.add_argument("--memory_dir", type=Path,
-                   default=Path("../.workbuddy/memory"))
+                   default=Path(".workbuddy/memory"))
     p.add_argument("--out", type=Path,
                    default=Path("report/stage_timeline.md"))
     p.add_argument("--out_json", type=Path,

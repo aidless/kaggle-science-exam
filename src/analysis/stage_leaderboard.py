@@ -154,7 +154,7 @@ def render_json(report: LeaderboardReport) -> dict:
 def main() -> int:
     p = argparse.ArgumentParser(description="Stage leaderboard")
     p.add_argument("--memory_dir", type=Path,
-                   default=Path("../.workbuddy/memory"))
+                   default=Path(".workbuddy/memory"))
     p.add_argument("--out", type=Path,
                    default=Path("report/stage_leaderboard.md"))
     p.add_argument("--out_json", type=Path,
