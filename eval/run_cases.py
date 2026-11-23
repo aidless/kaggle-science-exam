@@ -9,9 +9,10 @@
   * `doc`    —— `verify` 形如 `相对路径::正则`，断言该正则在文件里出现。
 - `expr` 题的期望值必须是**真跑出来的**，不是抄文档：改一行实现就可能让它变红，
   这正是这套题的意义。
-- `--selftest` 把第一条 case 的 expected 篡改成不可能的值，必须变红 —— 否则这套题是装饰
-  （对应 AGENTS.md 第 8 条 / 第 21 条的 RED→GREEN 两段断言）。
-- 退出码：0 全过；1 有失败；2 题库本身有问题（读不了/字段缺/重复 id）。
+- `--selftest` 把第一条 case 的 expected 篡改成不可能的值，必须恰好失败 1 条。
+  恰好 1 条失败时退出码 0；失败条数不是 1（全绿或不止 1 条）时退出码 3。
+- 退出码：0 全过（selftest 下改为恰好 1 条失败）；1 有失败；2 题库本身有问题；
+  3 selftest 没有恰好失败 1 条。
 
 用法：
     python3 eval/run_cases.py            # 跑全部
@@ -149,10 +150,10 @@ def main() -> int:
             for axis, ids in sorted(failed_by_axis.items()):
                 print(f"  {axis}: {len(ids)} 条 —— {', '.join(ids)}")
         if args.selftest:
-            print("SELFTEST: 期望变红；若上面仍全绿则这套题无效")
+            print("SELFTEST: 期望恰好 1 条失败；全绿或失败条数不是 1 都算这套题无效")
 
     if args.selftest:
-        return 0 if passed < len(rows) else 3
+        return 0 if passed == len(rows) - 1 else 3
     return 0 if passed == len(rows) else 1
 
 

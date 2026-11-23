@@ -13,11 +13,13 @@ pip install -r requirements.txt   # if present
 ## Verifying your change
 
 ```bash
-python3 -m pytest -q
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+make check
 ```
 
-If the repository has a `Makefile`, `make check` or the closest equivalent runs the same
-checks as CI. Please run it before opening a pull request.
+`make check` is the same offline gate CI runs. Please run it before opening a pull request.
 
 ## Pull requests
 

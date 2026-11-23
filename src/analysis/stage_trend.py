@@ -170,7 +170,7 @@ def main() -> int:
     p = argparse.ArgumentParser(
         description="Stage trend (week-over-week new stages)")
     p.add_argument("--memory_dir", type=Path,
-                   default=Path("../.workbuddy/memory"))
+                   default=Path(".workbuddy/memory"))
     p.add_argument("--out", type=Path,
                    default=Path("report/stage_trend.md"))
     p.add_argument("--out_json", type=Path,

@@ -1,216 +1,108 @@
-# Kaggle Science Exam - Stage Analysis Tools
+# Kaggle Science Exam — reconstructed stage-log tools (D41–D58)
 
 [![CI](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml/badge.svg)](https://github.com/aidless/kaggle-science-exam/actions/workflows/checks.yml)
-
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A collection of analysis modules that read `.workbuddy/memory/YYYY-MM-DD.md`
-files and produce reports on the cadence, structure, and quality of the
-stage workflow used in the project. It contains **18 reconstructed CLI modules (D41–D58)** only — the original Kaggle competition work (stages D1–D40) is permanently lost (see note below).
+This repository is 18 offline Python CLIs that read daily `.workbuddy/memory/YYYY-MM-DD.md` notes and report how stage ids show up in those notes.
+Stages D1–D40, the original `submission.zip`, and the history from before the 2026-07-20 workspace loss are not in this tree and are not reconstructed here.
+This is not a Kaggle competition result: there is no score, rank, or medal.
 
-> **Note (2026-07-20):** This README and the source tree were
-> reconstructed after a workspace loss on 2026-07-20 ~16:00 (the
-> original working directory was cleared by an unrelated operation). The modules
-> D41-D58 are restored from the conversation history. Earlier
-> stages D1-D40 are not included in this reconstruction; the
-> original `submission.zip` and full history is unavailable.
+**Headline (recomputed by `make check`).** On the committed logs (n=1, `.workbuddy/memory/2026-07-20.md`), stage ids on lines that start with `##` number 0, so `build_summary` returns n_stages=0, n_total_mentions=0, n_orphans=0, n_active_days=1, health D, health_score 0. `build_streak` on that same directory returns n_total_stages_first_seen=0, longest_streak=1, current_streak=1, first_active_date=2026-07-20, last_active_date=2026-07-20. Limits: the file is a reconstruction note, not a competition diary; an active day is any dated filename, including one with no stage headings, and `today` is ignored; maturity items 0; smoke uses a synthetic log; committed_reports=0. Separately, 71 pytest tests passing and 18/18 CLI smoke stages pass (`ALL SMOKE TESTS PASSED (D41 - D58)`). Eval is 20/20 cases passed, and the selftest is 19/20. `make check` fails if this run exceeds 15 minutes.
 
-## Installation
+The committed note states `D1-D40 未重建` and that `submission.zip` was not restored (`.workbuddy/memory/2026-07-20.md`).
 
-Dependencies are minimal: the 18 analysis modules use the Python standard
-library only; `pytest>=8.0` (from `requirements.txt`) is needed for the test
-suite and the smoke test.
+<!-- claims:start -->
+pytest_passed: 71
+pytest_failed: 0
+cli_modules: 18
+smoke_cli_ok: 18
+memory_logs: 1
+summary_n_stages: 0
+summary_n_total_mentions: 0
+summary_n_orphans: 0
+summary_n_active_days: 1
+summary_health: D
+summary_health_score: 0
+maturity_items: 0
+committed_reports: 0
+eval_passed: 20
+eval_total: 20
+eval_selftest_failed: 1
+streak_stages_first_seen: 0
+streak_longest: 1
+streak_current: 1
+streak_first_active_date: 2026-07-20
+streak_last_active_date: 2026-07-20
+check_budget_minutes: 15
+<!-- claims:end -->
 
-On Debian/Ubuntu with Python 3.12+, PEP 668 blocks direct `pip install` into
-the system interpreter — use a venv (verified 2026-11-10 on Ubuntu 24.04):
+PINNED: pytest_passed=71 pytest_failed=0 cli_modules=18 smoke_cli_ok=18 memory_logs=1 summary=0/0/0/1 health=D health_score=0 maturity_items=0 committed_reports=0 eval=20/20 selftest_failed=1 streak_stages=0 streak_longest=1 streak_current=1 streak_first=2026-07-20 streak_last=2026-07-20
+
+`summary` is n_stages/n_total_mentions/n_orphans/n_active_days. No package version is declared (there is no `pyproject.toml`, `setup.py`, `setup.cfg`, or `__version__`). Wall-clock durations are not claims. Failure modes: [FAILURE_MODES.md](FAILURE_MODES.md).
+
+## Install and check
+
+Dependencies are the Python standard library plus `pytest>=8.0` from `requirements.txt`. No API key and no Kaggle credential is used.
+
+CI Python is 3.10 and 3.12 in `checks.yml`, 3.12 in `ci.yml`, and 3.11 in `pr-checks.yml`.
 
 ```bash
-cd kaggle-science-exam
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
+make check
 ```
 
-## Quick start
+`make check` reruns `python3 -m pytest tests -q`, `tests/smoke_test.py`, and `eval/run_cases.py` (including the one-case selftest), then diffs the claims block and the `PINNED` line. `make eval` is pytest only.
 
-```bash
-python -m pytest tests/ -v
-python tests/smoke_test.py
-```
-
-### Example output (2026-11-10, fresh venv, `pip install -r requirements.txt`)
-
-```text
-$ python -m pytest tests/ -q
-.......................................................................  [100%]
-71 passed in 0.34s
-
-$ python tests/smoke_test.py
-[18/18] stage_coupling CLI
-...
-[18/18] stage_calendar CLI
-================================================================
-ALL SMOKE TESTS PASSED (D41 - D58)
-================================================================
-```
+From the repository root the default `--memory_dir` is `.workbuddy/memory`.
 
 ## Modules
 
 | Stage | Module | What it does |
 |-------|--------|--------------|
-| D41 | `src/analysis/stage_streak.py` | Consecutive-day streaks of activity |
-| D42 | `src/analysis/stage_leaderboard.py` | Most-mentioned stages + one-shot/repeat classification |
-| D43 | `src/analysis/stage_grep.py` | Grep Dxx in src/, tests/, report/ |
+| D41 | `src/analysis/stage_streak.py` | Consecutive-day streaks of dated notes |
+| D42 | `src/analysis/stage_leaderboard.py` | Most-mentioned stages on heading lines, plus one-shot/repeat |
+| D43 | `src/analysis/stage_grep.py` | Stage-id scan of `src/`, `tests/`, and `report/` |
 | D44 | `src/analysis/stage_coverage.py` | Per-stage coverage across project sources |
-| D45 | `src/analysis/stage_timeline.py` | First-seen dates + gap analysis |
-| D46 | `src/analysis/stage_cadence.py` | Per-day cadence + grade (A-F) |
-| D47 | `src/analysis/stage_suggestion.py` | Actionable next-stage suggestions |
-| D48 | `src/analysis/stage_summary.py` | Project health summary (grade A-D) |
-| D49 | `src/analysis/stage_trend.py` | Week-over-week trend + projection |
-| D50 | `src/analysis/stage_fanout.py` | Co-occurrence pairs + density |
+| D45 | `src/analysis/stage_timeline.py` | First-seen dates and gap analysis |
+| D46 | `src/analysis/stage_cadence.py` | Per-day cadence and an A–F grade |
+| D47 | `src/analysis/stage_suggestion.py` | Next-stage suggestions from the log |
+| D48 | `src/analysis/stage_summary.py` | Health summary graded A–D |
+| D49 | `src/analysis/stage_trend.py` | Week-over-week trend and a projection |
+| D50 | `src/analysis/stage_fanout.py` | Co-occurrence pairs and density |
 | D51 | `src/analysis/stage_clusters.py` | Greedy community detection |
 | D52 | `src/analysis/stage_backlog.py` | Mentioned-but-not-implemented backlog |
-| D53 | `src/analysis/stage_coupling.py` | Cross-cluster coupling + modularity |
-| D54 | `src/analysis/stage_maturity.py` | 3-channel score 0-3 (memory+code+readme) |
-| D55 | `src/analysis/stage_velocity.py` | Epochs + active ratio per stage |
+| D53 | `src/analysis/stage_coupling.py` | Cross-cluster coupling and modularity |
+| D54 | `src/analysis/stage_maturity.py` | Three-channel score (memory, code, readme) |
+| D55 | `src/analysis/stage_velocity.py` | Epochs and active ratio per stage |
 | D56 | `src/analysis/stage_density_curve.py` | Front-loaded / back-loaded flag |
-| D57 | `src/analysis/stage_distribution.py` | Mention histogram + Gini |
-| D58 | `src/analysis/stage_calendar.py` | Per-month + per-weekday + per-day counts |
-
-Each module is a CLI:
+| D57 | `src/analysis/stage_distribution.py` | Mention histogram and Gini |
+| D58 | `src/analysis/stage_calendar.py` | Per-month, per-weekday, and per-day counts |
 
 ```bash
-python -m src.analysis.stage_timeline \
-    --memory_dir ../.workbuddy/memory \
-    --out report/stage_timeline.md \
-    --out_json report/stage_timeline.json
-```
-
-## Project structure
-
-```
-kaggle_science_exam/
-+-- src/
-|   +-- __init__.py
-|   +-- analysis/
-|       +-- __init__.py
-|       +-- stage_streak.py          # D41
-|       +-- stage_leaderboard.py     # D42
-|       +-- stage_grep.py            # D43
-|       +-- stage_coverage.py        # D44
-|       +-- stage_timeline.py        # D45
-|       +-- stage_cadence.py         # D46
-|       +-- stage_suggestion.py      # D47
-|       +-- stage_summary.py         # D48
-|       +-- stage_trend.py           # D49
-|       +-- stage_fanout.py          # D50
-|       +-- stage_clusters.py        # D51
-|       +-- stage_backlog.py         # D52
-|       +-- stage_coupling.py        # D53
-|       +-- stage_maturity.py        # D54
-|       +-- stage_velocity.py        # D55
-|       +-- stage_density_curve.py   # D56
-|       +-- stage_distribution.py    # D57
-|       +-- stage_calendar.py        # D58
-+-- tests/
-|   +-- test_d{41-58}_*.py
-|   +-- smoke_test.py
-+-- report/   # CLI output goes here
-+-- .workbuddy/memory/  # input data
-+-- README.md
-```
-
-## Status
-
-- 18 modules (D41-D58) restored
-- 71 pytest tests passing (measured 2026-11-10, `python -m pytest tests/ -q`)
-- 18 smoke stages, all passing (measured 2026-11-10)- Reconstruction completed 2026-07-20 ~18:00
-
-## Fail-closed guarantee
-
-When the input is missing or malformed, the modules **do not fabricate numbers**.
-`_safe_read` returns `""` for a nonexistent path (`src/analysis/stage_summary.py:29`),
-and `build_summary` on an empty directory returns `n_stages=0, health="D"` (the worst
-grade) instead of inventing a health score — asserted by `tests/test_d48_stage_summary.py::test_build_summary_empty`.
-A missing log yields the worst grade, never a fake "pass".
-
-## Related work (reconstruction vs original audit)
-
-This toolset sits in a deliberate contrast to the original competition run:
-
-| Prior work | Real basis | This repo's relationship |
-|---|---|---|
-| Original Kaggle stages D1–D40 | Lost (workspace cleared 2026-07-20) | **Not** reconstructed here; this repo explicitly does not audit them |
-| Stage-analysis as an audit of a live run | A live project's `.workbuddy/memory/` logs | This repo measures a **reconstructed** log, not a live run |
-| Generic activity-streak / cadence analysis | Standard time-series activity metrics | This repo reimplements them per-stage (D41–D58) over daily markdown logs |
-| Community detection / coupling analysis | Graph partition + modularity | This repo applies greedy clustering + cross-cluster coupling to stage co-mentions |
-
-**Core difference**: a live-run stage audit can claim to describe the real workflow; this
-toolset explicitly **cannot** — the analysis is a reconstruction artifact, not an audit
-of the original project (see the note above and the "What this does and does not prove"
-section).
-
-## What this does and does not prove
-
-**Proves:** the 18 reconstructed CLI modules parse `.workbuddy/memory/*.md` daily
-logs and emit the documented report structures without error; each module's core
-logic (streak, cadence, coverage, clusters, backlog, coupling, maturity, velocity,
-distribution, calendar, etc.) is exercised by a passing pytest case on fixture
-input.
-
-**Does not prove:** these modules describe the original Kaggle competition work.
-Stages D1–D40 are permanently lost (workspace cleared 2026-07-20), so the
-"stage analysis" here measures a **reconstructed log**, not the original
-competition run. No leaderboard score, submission rank, or competition result is
-claimed. The analysis is a reconstruction artifact, not an audit of the original
-project.
-
-## Reproducing the numbers
-
-```bash
-cd kaggle-science-exam
-python -m pytest -q          # 71 passed
-python tests/smoke_test.py   # ALL 18 STAGES PASSED
-
-# one CLI, one run
-python -m src.analysis.stage_timeline \
+python -m src.analysis.stage_summary \
     --memory_dir .workbuddy/memory \
-    --out report/stage_timeline.md \
-    --out_json report/stage_timeline.json
+    --out report/stage_summary.md \
+    --out_json report/stage_summary.json
 ```
 
-All 71 tests live under `tests/` and all 18 modules under `src/analysis/`; the
-input fixture is `.workbuddy/memory/2026-07-20.md`. The count above is the
-actual `pytest --collect-only` total, not a target.
+`report/` is gitignored. Nothing under it is a recovered competition artifact.
 
-## 验收题库与复算
+## What this run shows, and what it does not
 
-`eval/cases.jsonl` 是 20 条可执行验收题，覆盖十一个口径：streak 的标题行解析与
-fail-closed 输入、summary 的最差等级、grep 对真仓文件的扫描计数与 `D1`→`D01`
-归一、maturity 的三通道（memory+code+readme）0-3 分、cadence 的评分公式与偶数
-中位数、velocity 的 epoch 切段、fanout 的 jaccard 与共现密度、distribution 的
-Gini、`tests/` 的 ast 条数（对表 PREREG 的 71）、keyword-only 签名契约，以及
-README/PREREG/Makefile 三条文档声明。
+`tests/test_d48_stage_summary.py::test_build_summary_empty` asserts that an empty directory returns n_stages=0 and health D. A missing directory takes the same grade. That is a property of the parser, not a grade of a competition and not a grade of this repository.
 
-大部分题目的期望值不是抄文档，而是**调用模块现算**：17 条 `expr`/`raises` 真跑
-`src.analysis.*`（其中 8 条直接解析仓库真实文件 —— `.workbuddy/memory/2026-07-20.md`、
-`src/`、`tests/`、`README.md`），3 条 `doc` 对文档逐字匹配。
+Smoke builds a temporary log. A green smoke run does not mean the committed note contains stage headings.
 
-```bash
-python3 eval/run_cases.py            # 20/20 cases passed
-python3 eval/run_cases.py --save     # 顺带把结果写进 eval/run-report.json
-python3 eval/run_cases.py --selftest # 篡改一条期望值，必须变红（19/20）
+This does not show that the modules describe the original Kaggle work. Stages D1–D40 are absent. No leaderboard score, submission rank, or medal is claimed.
+
+## Layout
+
 ```
-
-**数字如何复算**：`eval/run-report.json` 里每条 case 都带 `id` / `axis` / `detail`，
-把 `detail` 与 `cases.jsonl` 的 `verify` 代码一起看，就能从源码复现该数字；
-`--save` 重跑一次即可重建整份报告，不需要手工抄数。`expr` 题的 `verify` 用
-`Path(src.analysis.stage_*.__file__).parents[2]` 定位仓库根，因此在任意 cwd 下
-运行都读同一份真实文件。
-
-**失败归因**：`run_cases.py` 不只报通过率，失败时按 `axis` 汇总（例如
-`streak/口径: 1 条 —— KS-01`），直接指出是哪个模块的哪个口径坏了。
-
-**通过判据**：`python3 eval/run_cases.py` 的 pass_rate 必须 = 100%（20/20 条通过），
-退出码必须为 0；`python3 eval/run_cases.py --selftest` 的 pass_rate 必须 = 95%
-（19/20，即至少 1 条失败），否则这套题没有判别力。低于任一阈值即判定验收不通过。
+src/analysis/stage_*.py    # D41–D58 CLIs
+tests/                     # one test file per CLI, plus tests/smoke_test.py
+eval/cases.jsonl           # executable checks; eval/run_cases.py runs them
+.workbuddy/memory/         # the one committed note
+scripts/check_claims.py    # the make check implementation
+```
